@@ -1,0 +1,15 @@
+Package	"errol"
+Version	"1.0.0"
+
+Target
+	Name	"errol"
+	Type	"Library"
+
+	CFlags	""
+	LDFlags	"-lm"
+
+	Extra	"src/common.h"
+
+	Source	"src/fp.c"
+	Source	"src/errol.c"
+EndTarget

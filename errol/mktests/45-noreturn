@@ -1,0 +1,27 @@
+#!/bin/sh
+
+##
+# No return attribute test
+#   Tests compiler support for the attribute 'noreturn'.
+# Variables
+#   noreturn
+#     Set to the noreturn attribute string.
+# Definitions
+#   _noreturn
+#     If supported, set to to the appropriate definition, otherwise defined to
+#     a blank string.
+#.
+
+test "$noreturn" && echo "noreturn specified ($noreturn)"
+
+echo -n "checking attribute (noreturn)... "
+
+if [ -z "$noreturn" ] ; then
+	echo "__attribute__((noreturn)) void func() { while(1); }" > mktests/tmp.c
+	test -f mktests/tmp.c || { echo error ; exit 1 ; }
+	$cc $cflags $ldflags -c mktests/tmp.c -Wall -Werror -o mktests/tmp.out >> config.log 2>&1
+	test $? -eq 0 && test -f mktests/tmp.out && noreturn="__attribute__((noreturn))";
+fi
+
+echo "#define _noreturn $noreturn" >> "$config"
+test "$noreturn" && echo "$noreturn" || echo "no"
